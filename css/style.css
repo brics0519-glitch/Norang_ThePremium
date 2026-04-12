@@ -62,36 +62,6 @@ body::after {
     z-index: 0;
 }
 
-/* cursor */
-.cursor {
-    position: fixed;
-    width: 12px;
-    height: 12px;
-    background: var(--rose-deep);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
-    mix-blend-mode: difference;
-}
-
-.cursor-ring {
-    position: fixed;
-    width: 40px;
-    height: 40px;
-    border: 1.5px solid rgba(201, 168, 154, 0.55);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: transform 0.15s ease-out, width 0.3s, height 0.3s;
-}
-
-body:hover .cursor-ring {
-    opacity: 1;
-}
-
 /* nav */
 nav {
     position: fixed;
