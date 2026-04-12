@@ -24,10 +24,6 @@
     </div>
 
     <div class="page-progress" id="pageProgress"></div>
-
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
-
     <nav id="mainNav">
         <a href="./indexy.html" class="nav-logo"><img src="./image/logo.png" alt="logo"></a>
         <ul class="nav-links">
@@ -465,26 +461,6 @@
             if (loaderBar) loaderBar.style.width = '60%';
         }, 100);
 
-        const cursor = document.getElementById('cursor');
-        const cursorRing = document.getElementById('cursorRing');
-        let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-        if (cursor && cursorRing) {
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                cursor.style.left = mouseX + 'px';
-                cursor.style.top = mouseY + 'px';
-            });
-
-            (function animRing() {
-                ringX += (mouseX - ringX) * 0.12;
-                ringY += (mouseY - ringY) * 0.12;
-                cursorRing.style.left = ringX + 'px';
-                cursorRing.style.top = ringY + 'px';
-                requestAnimationFrame(animRing);
-            })();
-        }
 
         const pageProgress = document.getElementById('pageProgress');
         window.addEventListener('scroll', () => {
