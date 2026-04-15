@@ -1497,40 +1497,48 @@ footer {
 
 @media (max-width: 768px) {
     #video-reel {
-        height: 300svh;
+        height: auto;
     }
 
     .video-sticky {
-        position: sticky;
-        top: 0;
-        height: 100svh;
-        overflow: hidden;
+        position: relative;
+        top: auto;
+        height: auto;
+        overflow: visible;
+    }
+
+    .hero-track {
+        height: auto;
+        display: block;
     }
 
     .hero-scene {
-        position: absolute;
-        inset: 0;
+        position: relative;
+        inset: auto;
         width: 100%;
-        height: 100%;
+        height: 72svh;
+        min-height: 560px;
+        opacity: 1;
+        pointer-events: auto;
     }
 
     .hero-scene video {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        /* contain → cover 로 변경 */
         object-position: center center;
-        background: transparent;
+        display: block;
     }
 
     .hero-dim {
         background: linear-gradient(to bottom,
                 rgba(20, 16, 12, 0.10) 0%,
                 rgba(20, 16, 12, 0.16) 38%,
-                rgba(20, 16, 12, 0.28) 100%);
+                rgba(20, 16, 12, 0.30) 100%);
     }
 
     .hero-content {
+        position: absolute;
         top: 50%;
         left: 50%;
         right: auto;
@@ -1538,7 +1546,8 @@ footer {
         width: min(90%, 90vw);
         max-width: none;
         text-align: center;
-        transform: translate(-50%, calc(-50% + 20px));
+        opacity: 1;
+        transform: translate(-50%, -50%);
     }
 
     .hero-content.active {
@@ -1562,17 +1571,9 @@ footer {
         margin-top: 0.8rem;
     }
 
-    .hero-dots {
-        right: 1rem;
-        gap: 0.6rem;
-    }
-
+    .hero-dots,
+    .hero-progress-wrap,
     .hero-scroll-hint {
-        right: 1rem;
-        bottom: 1.2rem;
-    }
-
-    .hero-scroll-line {
-        height: 28px;
+        display: none;
     }
 }
