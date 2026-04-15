@@ -523,19 +523,38 @@
         });
 
         /* init */
-        function initAnimations() {
-            gsap.registerPlugin(ScrollTrigger);
+      function initAnimations() {
+    gsap.registerPlugin(ScrollTrigger);
+    initHeroReel();
+    initReveal();
+    initEventSlider();
+    initMenuTabs();
 
-            if (window.innerWidth > 768) {
-                initHeroReel();
+    const tempEl = document.getElementById('tempCount');
+    if (tempEl) {
+        tempEl.textContent = '80';
+        requestAnimationFrame(() => {
+            const start = 80;
+            const end = 156;
+            const duration = 900;
+            const startTime = performance.now();
+
+            function update(now) {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const value = Math.floor(start + (end - start) * progress);
+                tempEl.textContent = value;
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
             }
 
-            initReveal();
-            initEventSlider();
-            initMenuTabs();
-            ScrollTrigger.refresh();
-        }
+            requestAnimationFrame(update);
+        });
+    }
 
+    ScrollTrigger.refresh();
+}
         /* hero */
         function initHeroReel() {
             const heroSection = document.getElementById('video-reel');
@@ -613,10 +632,15 @@
                 scrub: true,
                 onUpdate: (self) => {
                     const progress = self.progress;
-                    const index = Math.min(
-                        heroScenes.length - 1,
-                        Math.floor(progress * heroScenes.length)
-                    );
+                    let index = 0;
+
+if (progress < 0.34) {
+    index = 0;
+} else if (progress < 0.68) {
+    index = 1;
+} else {
+    index = 2;
+}Ï
 
                     if (index !== currentHeroIndex) {
                         updateHero(index);
