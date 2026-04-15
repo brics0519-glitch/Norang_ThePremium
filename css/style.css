@@ -1429,6 +1429,7 @@ footer {
 }
 
 @media (max-width: 768px) {
+    
     /* nav */
     nav {
         padding: 1.2rem 1.5rem;
@@ -1552,10 +1553,25 @@ footer {
         flex-direction: column;
         gap: 1rem;
         text-align: center;
+        border-top: none;
+        padding-top: 1.2rem;
+        justify-content: center;
+    }
+.footer-social {
+        justify-content: center;
     }
 
+
+    .footer-copyright {
+        font-size: 0.72rem;
+    }
+.footer-col,
+    .footer-legal,
     .footer-certs {
-        justify-content: center;
+        display: none;
+    }
+     .footer-brand {
+        text-align: center;
     }
 
     .footer-brand p {
