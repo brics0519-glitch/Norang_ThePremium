@@ -556,8 +556,8 @@
                     width="560"
                     height="315"
                     src=""
-                    data-src="https://www.youtube.com/embed/rPsLPElOUTg?autoplay=1&mute=1&rel=0&playsinline=1"
-                    title="노랑통닭 광고 영상"
+                    data-src="https://www.youtube.com/embed/UiA1yP9GzCU?autoplay=1&mute=1&rel=0&playsinline=1"
+                    title="YouTube video player"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin"
@@ -572,59 +572,72 @@
         </div>
     </div>
 </div>
-    <script>
-    /* ═══════════════════════════════════════════════
-       LOADER
-    ═══════════════════════════════════════════════ */
-    document.body.style.overflow = 'hidden';
+   <script>
+/* ═══════════════════════════════════════════════
+   LOADER
+═══════════════════════════════════════════════ */
+document.body.style.overflow = 'hidden';
+
+setTimeout(() => {
+    const loaderBar = document.getElementById('loaderBar');
+    if (loaderBar) loaderBar.style.width = '60%';
+}, 100);
+
+window.addEventListener('load', () => {
+    const bar = document.getElementById('loaderBar');
+    const loader = document.getElementById('loader');
+
+    if (bar) bar.style.width = '100%';
 
     setTimeout(() => {
-        const loaderBar = document.getElementById('loaderBar');
-        if (loaderBar) loaderBar.style.width = '60%';
-    }, 100);
+        if (loader) loader.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        initAll();
+    }, 600);
+});
 
-    window.addEventListener('load', () => {
-        const bar    = document.getElementById('loaderBar');
-        const loader = document.getElementById('loader');
-        if (bar) bar.style.width = '100%';
-        setTimeout(() => {
-            if (loader) loader.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            initAll();
-        }, 600);
-    });
+/* ═══════════════════════════════════════════════
+   PAGE PROGRESS BAR
+═══════════════════════════════════════════════ */
+const pageProgress = document.getElementById('pageProgress');
 
-    /* ═══════════════════════════════════════════════
-       PAGE PROGRESS BAR
-    ═══════════════════════════════════════════════ */
-    const pageProgress = document.getElementById('pageProgress');
-    window.addEventListener('scroll', () => {
-        if (!pageProgress) return;
-        const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-        pageProgress.style.transform = `scaleX(${pct})`;
-    });
+window.addEventListener('scroll', () => {
+    if (!pageProgress) return;
 
-    /* ═══════════════════════════════════════════════
-       MAIN INIT
-    ═══════════════════════════════════════════════ */
-    function initAll() {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    pageProgress.style.transform = `scaleX(${pct})`;
+});
+
+/* ═══════════════════════════════════════════════
+   MAIN INIT
+═══════════════════════════════════════════════ */
+function initAll() {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
-        initReveal();
-        initEventSlider();
-        initMenuTabs();
-        initHamburger();
-        initAdPopup();
+    }
 
-        const isMobile = window.innerWidth <= 768;
-        if (isMobile) {
-            initTempCounter();          // 모바일: 단순 카운터
-        } else {
-            initHeroReel();             // 데스크탑: GSAP sticky scroll
-        }
+    initReveal();
+    initEventSlider();
+    initMenuTabs();
+    initHamburger();
+    initAdPopup();
 
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+        initTempCounter();
+    } else {
+        initHeroReel();
+    }
+
+    if (typeof ScrollTrigger !== 'undefined') {
         ScrollTrigger.refresh();
     }
-        // 광고 팝업
+}
+
+/* ═══════════════════════════════════════════════
+   광고 팝업
+═══════════════════════════════════════════════ */
 function initAdPopup() {
     const overlay = document.getElementById('adPopupOverlay');
     const closeBtn = document.getElementById('adPopupClose');
@@ -645,8 +658,7 @@ function initAdPopup() {
     function closeAdPopup() {
         overlay.classList.remove('open');
         overlay.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-
+        document.body.style.overflow = 'auto';
         frame.src = '';
     }
 
@@ -664,192 +676,271 @@ function initAdPopup() {
 
     setTimeout(openAdPopup, 1800);
 }
-    /* ═══════════════════════════════════════════════
-       HAMBURGER MENU  ← 수정
-    ═══════════════════════════════════════════════ */
-    function initHamburger() {
-        const hamburger    = document.getElementById('hamburger');
-        const overlay      = document.getElementById('mobileMenuOverlay');
-        const closeBtn     = document.getElementById('mobileMenuClose');
-        const mobileLinks  = document.querySelectorAll('.mobile-nav-link');
 
-        if (!hamburger || !overlay) return;
+/* ═══════════════════════════════════════════════
+   HAMBURGER MENU
+═══════════════════════════════════════════════ */
+function initHamburger() {
+    const hamburger = document.getElementById('hamburger');
+    const overlay = document.getElementById('mobileMenuOverlay');
+    const closeBtn = document.getElementById('mobileMenuClose');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
 
-        function openMenu() {
-            overlay.classList.add('open');
-            hamburger.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+    if (!hamburger || !overlay) return;
 
-        function closeMenu() {
-            overlay.classList.remove('open');
-            hamburger.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        hamburger.addEventListener('click', openMenu);
-        if (closeBtn) closeBtn.addEventListener('click', closeMenu);
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) closeMenu();
-        });
-        mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+    function openMenu() {
+        overlay.classList.add('open');
+        hamburger.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 
-    /* ═══════════════════════════════════════════════
-       HERO REEL — 데스크탑 GSAP sticky scroll  ← 핵심 수정
-    ═══════════════════════════════════════════════ */
-    function initHeroReel() {
-        const heroSection  = document.getElementById('video-reel');
-        const heroScenes   = document.querySelectorAll('.hero-scene');
-        const heroContents = document.querySelectorAll('.hero-content');
-        const heroDots     = document.querySelectorAll('.hero-dot');
-        const heroProgress = document.getElementById('heroProgress');
-        const tempEl       = document.getElementById('tempCount');
+    function closeMenu() {
+        overlay.classList.remove('open');
+        hamburger.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
 
-        if (!heroSection || !heroScenes.length) return;
+    hamburger.addEventListener('click', openMenu);
 
-        let currentIndex = 0;
-        let tempAnimated = false;
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeMenu);
+    }
 
-        /* 온도 카운터 */
-        function animateTemp() {
-            if (!tempEl || tempAnimated) return;
-            tempAnimated = true;
-            const start = 80, end = 156, duration = 900;
-            const t0 = performance.now();
-            (function tick(now) {
-                const p = Math.min((now - t0) / duration, 1);
-                tempEl.textContent = Math.floor(start + (end - start) * p);
-                if (p < 1) requestAnimationFrame(tick);
-            })(performance.now());
-        }
-
-        function resetTemp() {
-            if (!tempEl) return;
-            tempEl.textContent = '80';
-            tempAnimated = false;
-        }
-
-        /* 씬 전환 */
-   function goTo(index) {
-    if (index === currentIndex) return;
-    currentIndex = index;
-
-    heroScenes.forEach((s, i) => {
-        s.classList.toggle('active', i === index);
-
-        // 해당 씬에 처음 진입할 때만 비디오 로딩
-        const vid = s.querySelector('video');
-const source = vid.querySelector('source');
-if (source && source.dataset.src) {
-    source.src = source.dataset.src;
-}
-            vid.load();
-            vid.play();
-            delete vid.dataset.src; // 중복 로딩 방지
-        }
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeMenu();
     });
 
-    heroContents.forEach((c, i) => c.classList.toggle('active', i === index));
-    heroDots.forEach((d, i) => d.classList.toggle('active', i === index));
-
-    if (heroProgress) {
-        heroProgress.style.width = `${((index + 1) / heroScenes.length) * 100}%`;
-    }
-
-    if (index === 0) { animateTemp(); } else { resetTemp(); }
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
 }
 
-        /* 초기 상태 세팅 */
-        goTo(0);
-        animateTemp();
+/* ═══════════════════════════════════════════════
+   HERO REEL — 데스크탑 GSAP sticky scroll
+═══════════════════════════════════════════════ */
+function initHeroReel() {
+    const heroSection = document.getElementById('video-reel');
+    const heroScenes = document.querySelectorAll('.hero-scene');
+    const heroContents = document.querySelectorAll('.hero-content');
+    const heroDots = document.querySelectorAll('.hero-dot');
+    const heroProgress = document.getElementById('heroProgress');
+    const tempEl = document.getElementById('tempCount');
 
-        /* ── GSAP ScrollTrigger ── */
-        ScrollTrigger.create({
-            trigger : heroSection,
-            start   : 'top top',
-            end     : 'bottom bottom',
-            scrub   : 0.5,
-            onUpdate(self) {
-                const p = self.progress;
-                const newIndex = p < 0.34 ? 0 : p < 0.68 ? 1 : 2;
-                goTo(newIndex);
-            }
-        });
+    if (!heroSection || !heroScenes.length || typeof ScrollTrigger === 'undefined') return;
 
-        /* 닷 클릭 → 해당 씬으로 스크롤 */
-        heroDots.forEach((dot, i) => {
-            dot.addEventListener('click', () => {
-                const top    = heroSection.offsetTop;
-                const height = heroSection.offsetHeight - window.innerHeight;
-                window.scrollTo({ top: top + height * (i / heroScenes.length), behavior: 'smooth' });
-            });
-        });
-    }
+    let currentIndex = 0;
+    let tempAnimated = false;
 
-    /* ═══════════════════════════════════════════════
-       TEMP COUNTER (모바일 전용 — GSAP 없이)
-    ═══════════════════════════════════════════════ */
-    function initTempCounter() {
-        const tempEl = document.getElementById('tempCount');
-        if (!tempEl) return;
-        const start = 80, end = 156, duration = 900;
+    function animateTemp() {
+        if (!tempEl || tempAnimated) return;
+
+        tempAnimated = true;
+
+        const start = 80;
+        const end = 156;
+        const duration = 900;
         const t0 = performance.now();
-        (function tick(now) {
+
+        function tick(now) {
             const p = Math.min((now - t0) / duration, 1);
             tempEl.textContent = Math.floor(start + (end - start) * p);
             if (p < 1) requestAnimationFrame(tick);
-        })(performance.now());
+        }
+
+        requestAnimationFrame(tick);
     }
 
-    /* ═══════════════════════════════════════════════
-       REVEAL (IntersectionObserver)
-    ═══════════════════════════════════════════════ */
-    function initReveal() {
-        const els = document.querySelectorAll('.reveal');
-        if (!els.length) return;
-        const io = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.15 });
-        els.forEach(el => io.observe(el));
+    function resetTemp() {
+        if (!tempEl) return;
+        tempEl.textContent = '80';
+        tempAnimated = false;
     }
 
-    /* ═══════════════════════════════════════════════
-       EVENT SLIDER
-    ═══════════════════════════════════════════════ */
-    function initEventSlider() {
-        const track  = document.getElementById('eventTrack');
-        const slides = document.querySelectorAll('#event-section .event-slide');
-        const prev   = document.getElementById('eventPrev');
-        const next   = document.getElementById('eventNext');
-        if (!track || !slides.length) return;
+    function goTo(index) {
+        if (index === currentIndex) return;
+        currentIndex = index;
 
-        let cur = 0;
-        const update = () => { track.style.transform = `translateX(-${cur * 100}%)`; };
+        heroScenes.forEach((scene, i) => {
+            scene.classList.toggle('active', i === index);
 
-        next?.addEventListener('click', () => { cur = (cur + 1) % slides.length; update(); });
-        prev?.addEventListener('click', () => { cur = (cur - 1 + slides.length) % slides.length; update(); });
-        update();
+            const vid = scene.querySelector('video');
+            if (!vid) return;
+
+            const source = vid.querySelector('source');
+
+            if (source && source.dataset.src) {
+                source.src = source.dataset.src;
+                vid.load();
+                delete source.dataset.src;
+            }
+
+            if (i === index) {
+                const playPromise = vid.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {});
+                }
+            } else {
+                vid.pause();
+            }
+        });
+
+        heroContents.forEach((content, i) => {
+            content.classList.toggle('active', i === index);
+        });
+
+        heroDots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+
+        if (heroProgress) {
+            heroProgress.style.width = `${((index + 1) / heroScenes.length) * 100}%`;
+        }
+
+        if (index === 0) {
+            animateTemp();
+        } else {
+            resetTemp();
+        }
     }
 
-    /* ═══════════════════════════════════════════════
-       MENU TABS
-    ═══════════════════════════════════════════════ */
-    function initMenuTabs() {
-        const tabs   = document.querySelectorAll('.menu-tab');
-        const panels = document.querySelectorAll('.menu-panel');
-        if (!tabs.length) return;
+    heroScenes.forEach((scene, i) => {
+        if (i !== 0) {
+            const vid = scene.querySelector('video');
+            if (!vid) return;
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t   => t.classList.remove('active'));
-                panels.forEach(p => p.classList.remove('active'));
-                tab.classList.add('active');
-                document.getElementById(`tab-${tab.dataset.tab}`)?.classList.add('active');
+            const source = vid.querySelector('source');
+            if (source && source.src) {
+                source.dataset.src = source.src;
+                source.removeAttribute('src');
+                vid.load();
+            }
+        }
+    });
+
+    currentIndex = -1;
+    goTo(0);
+
+    ScrollTrigger.create({
+        trigger: heroSection,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.5,
+        onUpdate(self) {
+            const p = self.progress;
+            const newIndex = p < 0.34 ? 0 : p < 0.68 ? 1 : 2;
+            goTo(newIndex);
+        }
+    });
+
+    heroDots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+            const top = heroSection.offsetTop;
+            const height = heroSection.offsetHeight - window.innerHeight;
+            window.scrollTo({
+                top: top + height * (i / heroScenes.length),
+                behavior: 'smooth'
             });
         });
+    });
+}
+
+/* ═══════════════════════════════════════════════
+   TEMP COUNTER (모바일 전용)
+═══════════════════════════════════════════════ */
+function initTempCounter() {
+    const tempEl = document.getElementById('tempCount');
+    if (!tempEl) return;
+
+    const start = 80;
+    const end = 156;
+    const duration = 900;
+    const t0 = performance.now();
+
+    function tick(now) {
+        const p = Math.min((now - t0) / duration, 1);
+        tempEl.textContent = Math.floor(start + (end - start) * p);
+        if (p < 1) requestAnimationFrame(tick);
     }
-    </script>
+
+    requestAnimationFrame(tick);
+}
+
+/* ═══════════════════════════════════════════════
+   REVEAL
+═══════════════════════════════════════════════ */
+function initReveal() {
+    const els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.15 });
+
+    els.forEach(el => io.observe(el));
+}
+
+/* ═══════════════════════════════════════════════
+   EVENT SLIDER
+═══════════════════════════════════════════════ */
+function initEventSlider() {
+    const track = document.getElementById('eventTrack');
+    const slides = document.querySelectorAll('#event-section .event-slide');
+    const prev = document.getElementById('eventPrev');
+    const next = document.getElementById('eventNext');
+
+    if (!track || !slides.length) return;
+
+    let cur = 0;
+
+    function update() {
+        track.style.transform = `translateX(-${cur * 100}%)`;
+    }
+
+    if (next) {
+        next.addEventListener('click', () => {
+            cur = (cur + 1) % slides.length;
+            update();
+        });
+    }
+
+    if (prev) {
+        prev.addEventListener('click', () => {
+            cur = (cur - 1 + slides.length) % slides.length;
+            update();
+        });
+    }
+
+    update();
+}
+
+/* ═══════════════════════════════════════════════
+   MENU TABS
+═══════════════════════════════════════════════ */
+function initMenuTabs() {
+    const tabs = document.querySelectorAll('.menu-tab');
+    const panels = document.querySelectorAll('.menu-panel');
+
+    if (!tabs.length) return;
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            panels.forEach(p => p.classList.remove('active'));
+
+            tab.classList.add('active');
+
+            const targetPanel = document.getElementById(`tab-${tab.dataset.tab}`);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+        });
+    });
+}
+</script>
 
 </body>
 </html>
