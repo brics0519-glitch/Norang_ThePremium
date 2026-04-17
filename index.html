@@ -47,9 +47,9 @@
             <li><a href="#">창업안내</a></li>
         </ul>
         <button class="nav-order">주문하기</button>
-        <div class="hamburger" id="hamburger">
-            <span></span><span></span><span></span>
-        </div>
+        <button class="hamburger" id="hamburger" type="button" aria-label="메뉴 열기">
+    <span></span><span></span><span></span>
+</button>
     </nav>
 
     <!-- ─── HERO: 데스크탑 sticky scroll / 모바일 stacked ─── -->
@@ -740,9 +740,10 @@ function initAdPopup() {
 
         // 해당 씬에 처음 진입할 때만 비디오 로딩
         const vid = s.querySelector('video');
-        if (i === index && vid && vid.dataset.src) {
-            const source = vid.querySelector('source');
-            source.src = vid.dataset.src;
+const source = vid.querySelector('source');
+if (source && source.dataset.src) {
+    source.src = source.dataset.src;
+}
             vid.load();
             vid.play();
             delete vid.dataset.src; // 중복 로딩 방지
