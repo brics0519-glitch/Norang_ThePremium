@@ -1531,11 +1531,11 @@ footer {
 
     /* event grid */
     .event-grid { grid-template-columns: 1fr; padding: 0 16px; gap: 14px; }
-    .event-grid-item img { height: 220px; }
+    .event-grid-item img { height: 320px; }
 
     /* menu */
     .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 1px; padding: 0; }
-    .menu-card { aspect-ratio: 1 / 1.65; }
+    .menu-card { aspect-ratio: 1 / 1.12; }
     .menu-panel .menu-card:nth-child(n+5) { display: block; }
     .menu-overlay {
         left: 50%;
