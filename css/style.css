@@ -580,8 +580,8 @@ nav {
    EVENT GRID — 3열 가로 배열
 ═══════════════════════════════════════════════ */
 .event-grid {
-    width: 100%;
-    max-width: 1200px;
+   width: min(80%, 1200px);
+    max-width: none;
     margin: 0 auto;
     padding: 0 24px;
     display: grid;
@@ -806,7 +806,8 @@ nav {
 }
 
 .yt-banner-grid {
-    max-width: 1200px;
+    width: min(80%, 1200px);
+    max-width: none;
     margin: 3rem auto 0;
     padding: 0 2rem;
     display: grid;
